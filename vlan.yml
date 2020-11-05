@@ -17,7 +17,7 @@ tasks:
   name: Show vlan
   ios_command:
     commands:
-      show vlan
+      - show vlan
   register: show_vlan
 
   debug var = show_vlan.stdout_lines
