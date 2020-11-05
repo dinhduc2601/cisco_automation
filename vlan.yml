@@ -1,23 +1,24 @@
 ---
-- name: tao vlan
+- name: Set Ip Loobpack
   hosts: all
   gather_facts: no
 
   tasks:
-    - name: Create vlan
-      ios_vlan:
-        vlan_id: "{{ item.number }}"
-        name: "{{ item.name }}"
-        state: present
+    - name: Set loopback IPv4 address
+      ios_l3_interface:
+        name: "{{item.name}}"
+        ipv4: "{{item.ip}}"
       with_items:
-        - { number: 50, name: "phong_50" }
-        - { number: 51, name: "phong_51" }
-        - { number: 52, name: "phong_52" }
+        -  {name: loopback 1, ip: 192.168.1.1/24}
+        -  {name: loopback 2, ip: 192.168.1.1/24}
+        -  {name: loopback 3, ip: 192.168.1.1/24}
+        -  {name: loopback 4, ip: 192.168.1.1/24}
+        -  {name: loopback 5, ip: 192.168.1.1/24}
 
-    - name: Show vlan
+    - name: Show ip
       ios_command:
         commands:
-          - show vlan
-      register: show_vlan
+          - show ip int brief
+      register: show_ip
 
-    - debug: var=show_vlan.stdout_lines
+    - debug: var=show_ip.stdout_lines
